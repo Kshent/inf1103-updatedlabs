@@ -59,11 +59,11 @@ def display_orders():
 
 load_inventory()
 display_orders()
-print(f"Loaded starting inventory total: {inventory}")
 
 while True:
     product_name = input("\nEnter Product Name (or 'quit' to exit): ")
     if product_name.lower() == "quit":
+        save_inventory()
         break
 
     quantity = get_valid_quantity(input("Enter Quantity: "))
@@ -72,16 +72,19 @@ while True:
         continue
 
     order_id = get_next_order_id()
-    orders.append((order_id, product_name, quantity))  # <-- history tracking
+    orders.append((order_id, product_name, quantity))
     inventory += quantity
     total_units += quantity
 
     print(f"\nNew Order Added:\n{order_id},{product_name}, {quantity}")
     print(f"Tax: {calculate_tax(quantity):.2f}. Current total inventory: {inventory}")
-    print("(Not yet saved to file - orders list only lives in memory this run)")
 
-print("\nFull history recorded this session:")
-for order_id, name, qty in orders:
-    print(f"  {order_id}, {name}, {qty}")
-print(f"Total units entered this session: {total_units}")
-print(f"Failed/Rejected entries: {failed_attempts}")
+    save_inventory()
+    print(f"Order successfully saved to {INVENTORY_FILE}")
+
+    if inventory > 500:
+        print(f"There's an overstock. Total inventory of {inventory} exceeds limit of 500 units")
+        break
+
+print(f"\nTotal units bought: {total_units}")
+print(f"Number of Failed/Rejected Entries: {failed_attempts}")
