@@ -5,16 +5,11 @@ failed_attempts = 0
 total_units = 0
 orders = []
 
-# Always resolve the inventory file relative to this script's own folder,
-# so it doesn't matter what the current working directory happens to be
-# when the program is launched.
 INVENTORY_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "inventory.txt")
 STARTING_ORDER_ID = 1001
 
 
 def load_inventory():
-    """Load inventory total and order history from file.
-    Starts empty (no error) if the file doesn't exist or a line is bad."""
     global inventory, orders
     try:
         with open(INVENTORY_FILE) as f:
@@ -32,7 +27,6 @@ def load_inventory():
 
 
 def save_inventory():
-    """Save inventory total and order history to file."""
     with open(INVENTORY_FILE, "w") as f:
         f.write(f"{inventory}\n")
         for order_id, name, qty in orders:
@@ -50,6 +44,10 @@ def calculate_tax(amount):
     return amount * 0.1
 
 
+def get_next_order_id():
+    return orders[-1][0] + 1 if orders else STARTING_ORDER_ID
+
+
 def display_orders():
     print("Current Orders:")
     if not orders:
@@ -58,7 +56,7 @@ def display_orders():
         print(f"{order_id}, {name}, {qty}")
 
 
-# --- Phase A demo: prove load_inventory() works ---
+
 load_inventory()
 display_orders()
 print(f"Loaded starting inventory total: {inventory}")
@@ -73,8 +71,17 @@ while True:
         failed_attempts += 1
         continue
 
+    order_id = get_next_order_id()
+    orders.append((order_id, product_name, quantity))  # <-- history tracking
+    inventory += quantity
     total_units += quantity
-    print(f"(Not yet stored in history) Would add {product_name} x {quantity}. Tax: {calculate_tax(quantity):.2f}")
 
-print(f"\nTotal units entered this session: {total_units}")
+    print(f"\nNew Order Added:\n{order_id},{product_name}, {quantity}")
+    print(f"Tax: {calculate_tax(quantity):.2f}. Current total inventory: {inventory}")
+    print("(Not yet saved to file - orders list only lives in memory this run)")
+
+print("\nFull history recorded this session:")
+for order_id, name, qty in orders:
+    print(f"  {order_id}, {name}, {qty}")
+print(f"Total units entered this session: {total_units}")
 print(f"Failed/Rejected entries: {failed_attempts}")
