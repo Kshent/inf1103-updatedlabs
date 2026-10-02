@@ -1,0 +1,23 @@
+commit 21d4bf687eda28c52f8ca27ea47ae06c403753ca (HEAD -> master, origin/master)
+Author: Kshent <kshent15@gmail.com>
+Date:   Fri Oct 2 11:37:38 2026 +0800
+
+    final changes
+
+commit 0446aa713428219387821bb4ee2b00cc01e1bc0d
+Author: Kshent <kshent15@gmail.com>
+Date:   Fri Oct 2 11:35:09 2026 +0800
+
+    Added inventory.json
+
+commit 290a597e55dd921782ea6fd999da63bc63d5d146
+Author: Kshent <kshent15@gmail.com>
+Date:   Fri Oct 2 11:34:23 2026 +0800
+
+    After load_inventory() is working
+
+commit adb4c916b8173ed7a19dd567c040ce6f018e5261
+Author: Kshent <kshent15@gmail.com>
+Date:   Fri Oct 2 11:32:34 2026 +0800
+
+    After creating the Dictionary and adding few products
