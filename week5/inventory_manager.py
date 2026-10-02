@@ -1,7 +1,6 @@
-"""Inventory Management System - Phase 2
+"""
 
-Products are stored as dictionaries inside a list.
-The inventory is loaded from inventory.json when the file exists.
+Products are stored as dictionaries inside a list and persisted to a JSON file.
 """
 
 import json
@@ -27,6 +26,16 @@ def load_inventory():
     except (json.JSONDecodeError, OSError):
         print("Could not read the file. Starting with an empty inventory.")
         return []
+
+
+def save_inventory(inventory):
+    """Write the inventory list to INVENTORY_FILE."""
+    try:
+        with open(INVENTORY_FILE, "w") as file:
+            json.dump(inventory, file, indent=4)
+        print(f"Inventory saved successfully to {INVENTORY_FILE}.")
+    except OSError as error:
+        print(f"Error saving inventory: {error}")
 
 
 # ------------------------------------------------------------- input helpers
@@ -127,7 +136,8 @@ def show_menu():
     print("2. Add Product")
     print("3. Update Stock")
     print("4. Search Product")
-    print("5. Exit")
+    print("5. Save Inventory")
+    print("6. Exit")
     print("----------------------------")
 
 
@@ -150,11 +160,16 @@ def main():
         elif choice == "4":
             search_product(inventory)
         elif choice == "5":
+            print("Saving inventory...")
+            save_inventory(inventory)
+        elif choice == "6":
+            print("Saving inventory before exit...")
+            save_inventory(inventory)
             print("Thank you for using Inventory Management System.")
             print("Program terminated.")
             break
         else:
-            print("Invalid option. Please choose 1-5.")
+            print("Invalid option. Please choose 1-6.")
 
 
 if __name__ == "__main__":
