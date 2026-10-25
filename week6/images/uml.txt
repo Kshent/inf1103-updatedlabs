@@ -1,0 +1,11 @@
+Product                               Inventory
+- __product_id : str                  - __products : list[Product]
+- __name : str                        + add_product(product : Product) : void
+- __price : float                     + search_product(product_id : str) : Product
+- __stock : int                       + generate_product_id() : str
++ update_stock(quantity : int) : void + display_all() : void
++ display_information() : void        + to_list() : list
++ to_dict() : dict
++ from_dict(data : dict) : Product
+
+Inventory "1" ◆── "0..*" Product   (Inventory contains Products)
